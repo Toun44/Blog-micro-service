@@ -1,0 +1,29 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:../config-repo   # repo local pour le dev
+        # git:                                    # décommenter pour Git distant
+        #   uri: https://github.com/ton-user/config-repo
+        #   default-label: main
+        #   clone-on-start: true
+        #   force-pull: true
+  profiles:
+    active: native                                # utilise le filesystem en dev
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info

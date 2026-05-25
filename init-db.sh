@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+mysql -uroot -p"$MYSQL_ROOT_PASSWORD" <<EOF
+CREATE DATABASE IF NOT EXISTS article_db;
+CREATE DATABASE IF NOT EXISTS comment_db;
+CREATE DATABASE IF NOT EXISTS category_db;
+
+GRANT ALL PRIVILEGES ON article_db.*  TO '$MYSQL_USER'@'%';
+GRANT ALL PRIVILEGES ON comment_db.*  TO '$MYSQL_USER'@'%';
+GRANT ALL PRIVILEGES ON category_db.* TO '$MYSQL_USER'@'%';
+
+FLUSH PRIVILEGES;
+EOF

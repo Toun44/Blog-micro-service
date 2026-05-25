@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: article-service
+          uri: lb://article-service
+          predicates:
+            - Path=/articles,/articles/**
+          filters:
+            - StripPrefix=0
+        - id: comment-service
+          uri: lb://comment-service
+          predicates:
+            - Path=/comments,/comments/**
+          filters:
+            - StripPrefix=0
+        - id: category-service
+          uri: lb://category-service
+          predicates:
+            - Path=/categories,/categories/**
+          filters:
+            - StripPrefix=0
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
