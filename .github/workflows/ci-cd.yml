@@ -3,8 +3,6 @@ name: CI/CD Blog Microservices
 on:
   push:
     branches: [ main ]        # déclenche tous les jobs
-  pull_request:
-    branches: [ main ]        # déclenche uniquement build + test
 
 env:
   REGISTRY: localhost:5000
