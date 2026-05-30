@@ -63,16 +63,25 @@ jobs:
 
     strategy:
       matrix:
-        service:
-          - eureka-server
-          - api-gateway
-          - article-service
-          - comment-service
-          - category-service
         include:
+          - service: eureka-server
+            context: .
+            file: eureka-server/Dockerfile
+          - service: api-gateway
+            context: .
+            file: api-gateway/Dockerfile
+          - service: article-service
+            context: .
+            file: article-service/Dockerfile
+          - service: comment-service
+            context: .
+            file: comment-service/Dockerfile
+          - service: category-service
+            context: .
+            file: category-service/Dockerfile
           - service: frontend
             context: ./frontend
-            dockerfile: Dockerfile
+            file: ./frontend/Dockerfile
 
     steps:
       - name: Checkout code
@@ -81,8 +90,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ${{ matrix.context || '.' }}
-          file: ${{ matrix.dockerfile || format('{0}/Dockerfile', matrix.service) }}
+          context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${{ matrix.service }}:latest
