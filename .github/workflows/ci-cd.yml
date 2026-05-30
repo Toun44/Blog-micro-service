@@ -2,9 +2,9 @@ name: CI/CD Blog Microservices
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]        # déclenche tous les jobs
   pull_request:
-    branches: [ main ]
+    branches: [ main ]        # déclenche uniquement build + test
 
 env:
   REGISTRY: localhost:5000
@@ -32,7 +32,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Java 25
+      - name: Set up Java 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
@@ -82,7 +82,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.context || '.' }}
-          dockerfile: ${{ matrix.dockerfile || format('{0}/Dockerfile', matrix.service) }}
+          file: ${{ matrix.dockerfile || format('{0}/Dockerfile', matrix.service) }}
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${{ matrix.service }}:latest
@@ -97,7 +97,7 @@ jobs:
     name: Deploy to production
     runs-on: self-hosted
     needs: docker
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     environment: production
 
     steps:
