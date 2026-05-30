@@ -12,7 +12,7 @@ env:
 
 jobs:
 
-  # ─────────────────────────────────────────
+  # ────────────────────────a─────────────────
   # BUILD & TEST
   # ─────────────────────────────────────────
   build:
@@ -115,13 +115,8 @@ jobs:
 
       - name: Deploy
         run: |
-          # Mettre à jour les images depuis le registry local
-          docker-compose pull
-
-          # Relancer les conteneurs avec les nouvelles images
-          docker-compose up -d --no-build
-
-          # Nettoyer les anciennes images
+          docker compose pull
+          docker compose up -d --no-build
           docker image prune -f
         env:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
