@@ -79,7 +79,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.context || '.' }}
           dockerfile: ${{ matrix.dockerfile || format('{0}/Dockerfile', matrix.service) }}
