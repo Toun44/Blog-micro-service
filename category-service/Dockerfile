@@ -1,4 +1,4 @@
-FROM maven:3.9.5-eclipse-temurin-17 AS build
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY eureka-server/pom.xml eureka-server/
@@ -9,7 +9,7 @@ COPY category-service/pom.xml category-service/
 COPY category-service/src category-service/src
 RUN mvn -pl category-service -am package -DskipTests
 
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/category-service/target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
